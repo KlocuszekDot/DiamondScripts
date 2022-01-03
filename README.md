@@ -1,0 +1,2 @@
+# DiamondScripts
+Scripts for minecraft
