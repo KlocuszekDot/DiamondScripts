@@ -1,47 +1,104 @@
-#             ▄▄                                                      ▄▄  
-#▀███▀▀▀██▄   ██                                                    ▀███  
-#  ██    ▀██▄                                                         ██  
-#  ██     ▀█████  ▄█▀██▄ ▀████████▄█████▄   ▄██▀██▄▀████████▄    ▄█▀▀███  
-#  ██      ██ ██ ██   ██   ██    ██    ██  ██▀   ▀██ ██    ██  ▄██    ██  
-#  ██     ▄██ ██  ▄█████   ██    ██    ██  ██     ██ ██    ██  ███    ██  
-#  ██    ▄██▀ ██ ██   ██   ██    ██    ██  ██▄   ▄██ ██    ██  ▀██    ██  
-#▄████████▀ ▄████▄████▀██▄████  ████  ████▄ ▀█████▀▄████  ████▄ ▀████▀███▄
-#                                                                         
-#                                                                         
 
 options:
-	prefix: &3&lDiamond&7&lSkripts &8»
-on skript load:
-    send "{@prefix} &aDiamond Skript loaded" to console 
-    if {skript.diamondspawn} is "in files":
-        send "{@prefix} &aDiamondSpawn loaded!" to console 
-    if {skript.diamondspawn} is "in files":
-        send "{@prefix} &aDiamondCleaner loaded!" to console
-command /ds [<text>]:
+	prefix: &3&lDiamond&7&lmanager &8»
+command /diamondmanager [<text>] [<text>]:
     permission: diamondskripts.admin
     permission message: &fUnknown command. Type "/help" for a list of commands!
     trigger:
         if player has permission "diamondskripts.admin":
             if arg-1 is "reload":
-                send "{@prefix} &areloading scripts..." to player
-                execute command "sk reload diamond" by player
-                execute command "sk reload diamondCleaner" by player
-                execute command "sk reload diamondSpawn" by player
+                send "{@prefix} &aReloading scripts..." to player and console
+                execute console command "sk reload diamond.sk"
+                if file "plugins/Skript/scripts/diamondCleaner.sk" exists:
+                    execute console command "sk reload diamondCleaner.sk"
+                if file "plugins/Skript/scripts/diamondSpawn.sk" exists:
+                    execute console command "sk reload diamondSpawn.sk"
                 wait 2 seconds
-                send "{@prefix} &aSuccessfully reloaded all Diamond skripts" to player
+                send "{@prefix} &aSuccessfully reloaded all Diamond skripts" to player and console
             if arg-1 is "default":
-                send "{@prefix} &7Successfully applied default &asettings&7 to all Diamond Skripts." to player
                 set {command---usage} to false
+                wait 1 tick
                 set {command.%player%} to false
+                wait 1 tick
                 set {deletedarrows} to false
+                wait 1 tick
                 set {deleteditems} to false
+                wait 1 tick
+                send "{@prefix} &7Successfully applied default &asettings&7 to all Diamond Skripts." to player
+            if arg-1 is "delete":
+                if arg-2 is "warps":
+                    if file "plugins/Skript/scripts/diamondWarps.sk" exists:
+                        send "{@prefix} &7Deleting file &a'diamondWarps.sk'&7..." to player and console
+                        wait 2 seconds
+                        delete file "plugins/Skript/scripts/diamondWarps.sk"
+                        send "{@prefix} &7Successfully delete file &a'diamondWarps.sk'&7!" to player and console
+                        wait 2 seconds
+                        execute console command "sk reload diamondWarps"
+                if arg-2 is "spawn":
+                    if file "plugins/Skript/scripts/diamondSpawn.sk" exists:
+                        send "{@prefix} &7Deleting file &a'diamondSpawn.sk'&7..." to player and console
+                        wait 2 seconds
+                        delete file "plugins/Skript/scripts/diamondSpawn.sk"
+                        send "{@prefix} &7Successfully delete file &a'diamondSpawn.sk'&7!" to player and console
+                        wait 2 seconds
+                        execute console command "sk reload diamondSpawn"
+                    else:
+                        send "{@prefix} &cfile is doesn't exists!" to player and console
+                if arg-2 is "cleaner":
+                    if file "plugins/Skript/scripts/diamondCleaner.sk" exists:
+                        send "{@prefix} &7Deleting file &a'diamondCleaner.sk'&7..." to player and console
+                        wait 2 seconds
+                        delete file "plugins/Skript/scripts/diamondCleaner.sk"
+                        send "{@prefix} &7Successfully delete file &a'diamondCleaner.sk'&7!" to player and console
+                        wait 2 seconds
+                        execute console command "sk reload diamondCleaner"
+                    else:
+                        send "{@prefix} &cfile is doesn't exists!" to player and console
+            if arg-1 is "download":
+                if arg-2 is "warps":
+                    if file "plugins/Skript/scripts/diamondWarps.sk" doesn't exists:
+                        send "{@prefix} &7Creating file &a'diamondWarps.sk'&7..." to player and console
+                        create file "plugins/Skript/scripts/diamondWarps.sk"
+                        wait 1 second
+                        send "{@prefix} &7Downloading content to &a'diamondWarps.sk'&7.." to player and console
+                        download from "https://code.skript.pl/0Y36Em7S/raw" to "plugins/Skript/scripts/diamondWarps.sk"
+                        wait 2.5 seconds
+                        send "{@prefix} &7Loading &a'diamondSpawn.sk'&7..." to player and console
+                        execute console command "sk reload diamondWarps.sk"
+                        wait 2 seconds
+                        send "{@prefix} &7File &a'diamondWarps.sk'&7 successfully created and load!" to player and console
+                    else:
+                        send "{@prefix} &cfile is alread exists!" to player and console
+                if arg-2 is "spawn":
+                    if file "plugins/Skript/scripts/diamondSpawn.sk" doesn't exists:
+                        send "{@prefix} &7Creating file &a'diamondSpawn.sk'&7..." to player and console
+                        create file "plugins/Skript/scripts/diamondSpawn.sk"
+                        wait 1 second
+                        send "{@prefix} &7Downloading content to &a'diamondSpawn.sk'&7.." to player and console
+                        download from "https://code.skript.pl/uLPD5mlD/raw" to "plugins/Skript/scripts/diamondSpawn.sk"
+                        wait 2.5 seconds
+                        send "{@prefix} &7Loading &a'diamondSpawn.sk'&7..." to player and console
+                        execute console command "sk reload diamondSpawn.sk"
+                        wait 2 seconds
+                        send "{@prefix} &7File &a'diamondSpawn.sk'&7 successfully created and load!" to player and console
+                    else:
+                        send "{@prefix} &cfile is alread exists!" to player and console
+                if arg-2 is "cleaner":
+                    if file "plugins/Skript/scripts/diamondCleaner.sk" doesn't exists:
+                        send "{@prefix} &7Creating file &a'diamondCleaner.sk'&7..." to player and console
+                        create file "plugins/Skript/scripts/diamondCleaner.sk"
+                        wait 1 second
+                        send "{@prefix} &7Downloading content to &a'diamondCleaner.sk'&7.." to player and console
+                        download from "https://code.skript.pl/rg5rXt1k/raw" to "plugins/Skript/scripts/diamondCleaner.sk"
+                        wait 2.5 seconds
+                        send "{@prefix} &7Loading &a'diamondCleaner.sk'&7..." to player and console
+                        execute console command "sk reload diamondCleaner"
+                        wait 2 seconds
+                        send "{@prefix} &7File &a'diamondCleaner.sk'&7 successfully created and load!" to player and console
+                    else:
+                        send "{@prefix} &cfile is alread exists!" to player and console
             if arg-1 is not set:
                 send "{@prefix}"  
-                send " &a/ds reload&7 - teleport you to spawn"  
-                send " &a/ds default&7 - set all settings to default"
-            else:
-                if arg-1 is not "deafult":
-                    if arg-1 is not "reload":
-                        send "{@prefix}"  
-                        send " &aDiamondSpawn &7- %{skript.diamondspawn}%"  
-                        send " &aDiamondCleaner&7 - %{skript.diamondcleaner}%"
+                send " &a/diamondmanager reload&7 - reload all Diamond scripts"
+                send " &a/diamondmanager default&7 - set all settings to default"
+                send " &a/diamondmanager download [spawn/cleaner]&7 - download diamond spawn or cleaner"
